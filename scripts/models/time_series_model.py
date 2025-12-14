@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
+import joblib
 import os
 
 # ==============================
@@ -12,9 +13,6 @@ SAVED_MODELS_DIR = os.path.join(BASE_DIR, "TikTok_Reach_Analysis_outputs", "save
 os.makedirs(SAVED_MODELS_DIR, exist_ok=True)
 
 # Load dataset
-if not os.path.exists(DATA_PATH):
-    raise FileNotFoundError(f"Data file not found: {DATA_PATH}")
-
 df = pd.read_csv(DATA_PATH)
 df["Date_Posted"] = pd.to_datetime(df["Date_Posted"])
 
@@ -48,6 +46,10 @@ class TikTokTimeSeriesModel:
         plt.legend()
         plt.savefig(os.path.join(SAVED_MODELS_DIR, "timeseries_forecast.png"), dpi=300, bbox_inches="tight")
         plt.close()
+
+        # Save model
+        joblib.dump(self.model, os.path.join(SAVED_MODELS_DIR, "timeseries_model.pkl"))
+        print("✅ Time series model saved as .pkl")
 
 # ==============================
 # Run Time Series

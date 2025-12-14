@@ -4,6 +4,7 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix, classification_report
+import joblib
 import os
 
 # ==============================
@@ -15,9 +16,6 @@ SAVED_MODELS_DIR = os.path.join(BASE_DIR, "TikTok_Reach_Analysis_outputs", "save
 os.makedirs(SAVED_MODELS_DIR, exist_ok=True)
 
 # Load dataset
-if not os.path.exists(DATA_PATH):
-    raise FileNotFoundError(f"Data file not found: {DATA_PATH}")
-
 df = pd.read_csv(DATA_PATH)
 
 # ==============================
@@ -54,6 +52,10 @@ class TikTokClassificationModel:
         plt.ylabel("Actual")
         plt.savefig(os.path.join(SAVED_MODELS_DIR, "classification_confusion_matrix.png"), dpi=300, bbox_inches="tight")
         plt.close()
+
+        # Save model
+        joblib.dump(self.model, os.path.join(SAVED_MODELS_DIR, "classification_model.pkl"))
+        print("✅ Classification model saved as .pkl")
 
 # ==============================
 # Run Classification

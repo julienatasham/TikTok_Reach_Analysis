@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
+import joblib
 import os
 
 # ==============================
@@ -14,9 +15,6 @@ SAVED_MODELS_DIR = os.path.join(BASE_DIR, "TikTok_Reach_Analysis_outputs", "save
 os.makedirs(SAVED_MODELS_DIR, exist_ok=True)
 
 # Load dataset
-if not os.path.exists(DATA_PATH):
-    raise FileNotFoundError(f"Data file not found: {DATA_PATH}")
-
 df = pd.read_csv(DATA_PATH)
 
 # ==============================
@@ -57,6 +55,10 @@ class TikTokRegressionModel:
         plt.title("Regression: Actual vs Predicted")
         plt.savefig(os.path.join(SAVED_MODELS_DIR, "regression_actual_vs_predicted.png"), dpi=300, bbox_inches="tight")
         plt.close()
+
+        # Save model
+        joblib.dump(self.model, os.path.join(SAVED_MODELS_DIR, "regression_model.pkl"))
+        print("✅ Regression model saved as .pkl")
 
 # ==============================
 # Run Regression

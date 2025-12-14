@@ -1,0 +1,6 @@
+TIKTOK REACH EDA REPORT
+============================================================
+Rows: 500
+Columns: 33
+Average Reach: 20830.62
+Best Time Category: Evening
